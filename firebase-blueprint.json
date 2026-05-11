@@ -1,0 +1,67 @@
+{
+  "entities": {
+    "Vendor": {
+      "title": "Vendor",
+      "description": "A SaaS vendor tracked by the company",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "totalSpend": { "type": "number" },
+        "monthlySpend": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "inactive", "underutilized"] },
+        "lastBilled": { "type": "string", "format": "date" },
+        "renewalDate": { "type": "string", "format": "date" },
+        "utilizationScore": { "type": "number" },
+        "seatCount": { "type": "number" },
+        "activeUsers": { "type": "number" },
+        "ownerId": { "type": "string" }
+      },
+      "required": ["name", "monthlySpend", "status", "ownerId"]
+    },
+    "Recommendation": {
+      "title": "Recommendation",
+      "description": "AI generated cost optimization suggestion",
+      "type": "object",
+      "properties": {
+        "vendorId": { "type": "string" },
+        "vendorName": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "projectedSavings": { "type": "number" },
+        "impact": { "type": "string", "enum": ["low", "medium", "high"] },
+        "type": { "type": "string", "enum": ["cancel", "downgrade", "merge", "negotiate"] },
+        "status": { "type": "string", "enum": ["pending", "applied", "dismissed"] },
+        "ownerId": { "type": "string" }
+      },
+      "required": ["title", "projectedSavings", "status", "ownerId"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "A SaaS billing record",
+      "type": "object",
+      "properties": {
+        "vendorName": { "type": "string" },
+        "amount": { "type": "number" },
+        "date": { "type": "string", "format": "date" },
+        "status": { "type": "string", "enum": ["paid", "pending", "flagged"] },
+        "ownerId": { "type": "string" }
+      },
+      "required": ["amount", "date", "status", "ownerId"]
+    }
+  },
+  "firestore": {
+    "vendors": {
+      "schema": { "$ref": "#/entities/Vendor" },
+      "description": "Collection of tracked vendors"
+    },
+    "recommendations": {
+      "schema": { "$ref": "#/entities/Recommendation" },
+      "description": "Collection of optimization recommendations"
+    },
+    "invoices": {
+      "schema": { "$ref": "#/entities/Invoice" },
+      "description": "Collection of processed invoices"
+    }
+  }
+}
